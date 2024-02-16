@@ -1,4 +1,4 @@
-import { getConnection } from "../database/connection"
+import { getConnection } from "../database/connection.js"
 
 export const createNewRemito =(req,res)=> {
 

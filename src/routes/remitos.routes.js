@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { createNewRemito } from '../controllers/remitos.controllers'
+import { createNewRemito } from '../controllers/remitos.controllers.js'
 
 
 const router= Router()
