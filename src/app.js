@@ -1,8 +1,9 @@
 import express from 'express'
 import config from './config.js'
 
-import productsRoutes from './routes/products.routes.js'
-import clientsRoutes from './routes/clients.routes.js'
+import usuariosRoutes from './routes/usuarios.routes.js'
+import articulosRoutes from './routes/articulos.routes.js'
+import clientesRoutes from './routes/clientes.routes.js'
 import remitosRoutes from './routes/remitos.routes.js'
 
 const app= express()
@@ -17,10 +18,10 @@ app.set('port',config.port)
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
-app.use(productsRoutes);
-app.use(clientsRoutes);
+app.use(usuariosRoutes);
+app.use(articulosRoutes);
+app.use(clientesRoutes);
 app.use(remitosRoutes);
-
 
 export default app
 

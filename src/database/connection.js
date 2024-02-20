@@ -15,11 +15,22 @@ config();
 };
 */
 
-const dbSettings = {
+const dbSettingsDATO = {
     user:process.env.DB_USER,
     password:process.env.DB_PASSWORD,
     server:process.env.DB_SERVER,
-    database:process.env.DB_NAME,
+    database:process.env.DB_NAME_DATO,
+    port:42167,//process.env.DB_PORT,
+    options: {
+        encrypt:false
+    }
+};
+
+const dbSettingsSEGU = {
+    user:process.env.DB_USER,
+    password:process.env.DB_PASSWORD,
+    server:process.env.DB_SERVER,
+    database:process.env.DB_NAME_SEGU,
     port:42167,//process.env.DB_PORT,
     options: {
         encrypt:false
@@ -27,14 +38,20 @@ const dbSettings = {
 };
 
 
-export async function getConnection(){
+export async function getConnectionDATO(){
     try{
-    const pool= await sql.connect(dbSettings)
+        const pool= await sql.connect(dbSettingsDATO)
+        return pool;
+    }catch(error){
+        console.error(error);
+    }
+};
+
+export async function getConnectionSEGU(){
+    try{
+    const pool= await sql.connect(dbSettingsSEGU)
     return pool;
-}catch(error){
-    console.error(error);
-
-}
-
-}
-
+    }catch(error){
+        console.error(error);
+    }
+};
