@@ -1,20 +1,23 @@
-import express from 'express'
 import config from './config.js'
+import express from 'express';
+import cors from 'cors';
 
 import usuariosRoutes from './routes/usuarios.routes.js'
 import articulosRoutes from './routes/articulos.routes.js'
 import clientesRoutes from './routes/clientes.routes.js'
 import remitosRoutes from './routes/remitos.routes.js'
 
-const app= express()
+
+const app = express();
 
 
 //Settings
 //Configurar puerto. Si existe variable tome puerto, sino use 3000
-app.set('port',config.port)
+app.set('port', config.port);
 
 //middlewares
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
