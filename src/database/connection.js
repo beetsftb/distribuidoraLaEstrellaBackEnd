@@ -19,10 +19,11 @@ const dbSettingsDATO = {
     user:process.env.DB_USER,
     password:process.env.DB_PASSWORD,
     server:process.env.DB_SERVER,
-    database:process.env.DB_NAME_DATO,
+    database:'DCORDATO',
     port:42167,//process.env.DB_PORT,
     options: {
-        encrypt:false
+        encrypt: false,
+        schema: 'DCORDATO'
     }
 };
 
@@ -30,10 +31,11 @@ const dbSettingsSEGU = {
     user:process.env.DB_USER,
     password:process.env.DB_PASSWORD,
     server:process.env.DB_SERVER,
-    database:process.env.DB_NAME_SEGU,
+    database:'DCORSEGU',
     port:42167,//process.env.DB_PORT,
     options: {
-        encrypt:false
+        encrypt: false,
+        schema:'DCORSEGU'
     }
 };
 
