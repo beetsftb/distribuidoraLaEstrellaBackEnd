@@ -1,9 +1,11 @@
 import {Router} from 'express'
-import { createNewRemito } from '../controllers/remitos.controllers.js'
+import { crearRemito, getRemitos, getRemitoByCodigo } from '../controllers/remitos.controllers.js'
 
 
 const router= Router()
 
-router.post('/remitos', createNewRemito)
+router.post('/remitos', crearRemito)
+router.get('/remitos', getRemitos)
+router.get('/remitos/:codigo', getRemitoByCodigo)
 
 export default router
