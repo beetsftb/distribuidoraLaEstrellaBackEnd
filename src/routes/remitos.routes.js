@@ -1,11 +1,14 @@
 import {Router} from 'express'
-import { crearRemito, getRemitos, getRemitoByCodigo } from '../controllers/remitos.controllers.js'
+import { crearRemito, getRemitos, getRemitoByCodigo, calculoRemito } from '../controllers/remitos.controllers.js'
 
 
-const router= Router()
+const router= Router();
 
-router.post('/remitos', crearRemito)
-router.get('/remitos', getRemitos)
-router.get('/remitos/:codigo', getRemitoByCodigo)
 
-export default router
+router.get('/remitos', getRemitos);
+router.get('/remitos/:codigo', getRemitoByCodigo);
+
+router.post('/calcularremito', calculoRemito);
+router.post('/crearremito', crearRemito);
+
+export default router;
