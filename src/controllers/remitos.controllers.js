@@ -448,12 +448,114 @@ function obtenerHoraHHMMSS(ahora) {
 }
 
 
-export const getRemitos = (req,res)=>{
-    console.log("GetRemitos");
-    res.json('get remitos');
+export const getRemitos = async (req,res)=>{
+    try {
+        // le pido a ObtenerRemmitos que me devuelva todos los remitos.
+        const resultado = await obtenerRemitos(-1);
+            res.status(200)
+               .json(resultado);
+    } catch (error) {
+            res.status(500)
+               .json(resultado);
+    }
 }
 
-export const getRemitoByCodigo = (req,res)=>{
-    console.log("GetRemitobyCodigo");
-    res.json('get remito by codigo');
+async function obtenerRemitos (nroRemito){
+    let pool;
+    let x = 0;
+    let resultCab;
+
+    try{
+        pool = await getConnectionDATO();
+
+        
+        if (nroRemito != -1){
+            resultCab = await pool.request()
+                                        .input("remito", nroRemito)
+                                        .query("SELECT cab.* FROM dbo.XTREMITOS cab where REMITO = @remito");    
+        }
+        else{
+            resultCab = await pool.request()
+                                        .query("SELECT cab.* FROM dbo.XTREMITOS cab ");
+        }
+
+        const remitos = [];
+
+        for(const fila of resultCab.recordset){
+            const articulos = [];
+
+            //busco las líneas del remito.
+            const resultDet = await pool.request()
+                                        .input("remito", fila.REMITO)
+                                        .query("SELECT det.* FROM dbo.XTREMITOSDET det WHERE det.REMITO = @remito");
+
+            // busco el nombre del cliente para complementar el objeto remito.
+            const resultCliente = await pool.request()
+                                        .input("Codigo", fila.COD_CLIENTE)
+                                        .query("SELECT NOMBRE FROM DCORDATO.dbo.FUCLIENTES where COD_CLIENTE = @Codigo");
+
+            for(const filaDet of resultDet.recordset){
+                articulos.push(filaDet);
+            }
+
+            remitos.push({
+                ORGANIZACION:  fila.ORGANIZACION,       
+                PREF: fila.PREF,               
+                REMITO : fila.REMITO,             
+                COD_CLIENTE: fila.COD_CLIENTE, 
+                DESC_CLIENTE: resultCliente.recordset[0].NOMBRE,      
+                COD_VEND: fila.COD_VEND,           
+                OBSERVA: fila.OBSERVA,           
+                ESTADO: fila.ESTADO,             
+                FECHA: fila.FECHA,              
+                SUB_TOTAL: fila.SUB_TOTAL,          
+                IMP_RESP: fila.IMP_RESP,           
+                IMP_TOTAL: fila.IMP_TOTAL,          
+                AUD_FEC: fila.AUD_FEC,            
+                AUD_HOR: fila.AUD_HOR,            
+                AUD_USR: fila.AUD_USR,           
+                TIPO_REMITO: fila.TIPO_REMITO,        
+                DESTINO: fila.DESTINO,           
+                CODBARRA: fila.CODBARRA,           
+                COD_ARTICULO: fila.COD_ARTICULO,      
+                NROREP: fila.NROREP,             
+                MARCA: fila.MARCA,             
+                DESCRIPCION: fila.DESCRIPCION  ,       
+                CANTIDAD: fila.CANTIDAD,           
+                PREUNI: fila.PREUNI,           
+                ALIC: fila.ALIC,              
+                ALICE: fila.ALICE,           
+                RUBSTK: fila.RUBSTK,            
+                LISTA: fila.LISTA,
+                ARTICULOS: articulos            
+            });
+        };
+
+        return remitos;
+    }
+    catch (error) {
+        console.error(error);
+        return { IsSuccess: "false", Message: 'Error al obtener remito: ' + error.message };
+    } finally {
+        if (pool) {
+            try {
+                await pool.close();
+            } catch (err) {
+                console.err("Error al cerrar la conexión", err);
+            }
+        }
+    }
+}    
+
+
+export const getRemitoByNumero = async(req,res)=>{
+    try {
+        // le pido a ObtenerRemmitos que me devuelva solo el remito solicitado .
+        const resultado = await obtenerRemitos(req.params.numero);
+            res.status(200)
+               .json(resultado);
+    } catch (error) {
+            res.status(500)
+               .json(resultado);
+    }
 }
