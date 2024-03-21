@@ -23,7 +23,7 @@ export const getClientes = async(req,res)=> {
             try {
                 await pool.close();
             } catch (err) {
-                console.error("Error al cerrar la conexión", err);
+                console.error("Error al cerrar la conexiÃ³n", err);
             }
         }
 
@@ -60,7 +60,7 @@ export const getClienteByCodigo = async (req, res) => {
             try {
                 await pool.close();
             } catch (err) {
-                console.error("Error al cerrar la conexión", err);
+                console.error("Error al cerrar la conexiÃ³n", err);
             }
         }
     }
