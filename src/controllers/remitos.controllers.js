@@ -115,7 +115,6 @@ export const crearRemito = async(req,res)=> {
     let tipo_remito = "VE";
     let destino = "DEP";
     let lista = 1;
-    let det_fecmov = null;
     let det_cantidev =0;
     let det_nroped = 0;
     let det_faccon = 1;
